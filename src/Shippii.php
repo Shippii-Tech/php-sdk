@@ -95,7 +95,8 @@ class Shippii
     public function setApiKey(string $apiKey, $guzzle = null)
     {
         $this->apiKey = $apiKey;
-        $host = 'https://api.shippii.dev/';
+        //$host = 'https://api.shippii.dev/';
+        $host = "http://shippii.test";
         $this->guzzle = $guzzle ?: new HttpClient([
             'base_uri' => $host,
             'http_errors' => false,

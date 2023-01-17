@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace Shippii\Resources;
 
 use Shippii\Shippii;
+use AllowDynamicProperties;
 
-class Resource
+#[AllowDynamicProperties]
+class  Resource
 {
     /**
      * The resource attributes.
@@ -87,5 +89,31 @@ class Resource
         }
 
         return str_replace(' ', '', implode(' ', $parts));
+    }
+
+    public static function constructFrom(array $payload, Shippii $shippii)
+    {
+        $objectType = $payload['data']['object_type'];
+        $data = $payload['data'][$objectType];
+        $objectType = "Shippii\\Resources\\" . $objectType;
+        unset($data['object_type']);
+
+        $obj = new static($data, $shippii);
+
+        $finalObject = self::recast($objectType, $obj, $shippii);
+        return $finalObject;
+    }
+
+    public static function recast(string $className, self &$object, Shippii $shippii)
+    {
+        $new = new $className([], $shippii);
+
+        foreach ($object as $property => &$value) {
+            $new->$property = &$value;
+            unset($object->$property);
+        }
+        unset($object);
+
+        return $new;
     }
 }

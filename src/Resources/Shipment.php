@@ -12,6 +12,7 @@ class Shipment extends Resource
     public array|null $receiver = null;
     public array|null $lines = null;
     public array $carrierOptions;
+    public array|null $parcels = null;
     public string $state;
     public string|null $rateId;
     public string|null $creatorId;
