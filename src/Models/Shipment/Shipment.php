@@ -37,6 +37,7 @@ final class Shipment
     public string|null $system_reference = null;
     public Address|null $receivable_address = null;
     public ShipmentReceivable|null $receivable = null;
+    public ShipmentReceivable|null $receiver = null;
     public Address|null $sendable_address = null;
     public OrganisationObject|null $organisation_object = null;
     public string|null $carrier_identification = null;
