@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Shippii\Actions;
 
+use Shippii\Models\Message\Message;
 use Shippii\Models\Shipment\Shipment;
 use Shippii\Util\Util;
 
@@ -87,17 +88,19 @@ trait ManageShipments
      *
      * @param string $shipmentId
      * @param string $shipmentState
-     * @return Shipment
+     * @return Message
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Shippii\Exceptions\FailedActionException
      * @throws \Shippii\Exceptions\NotFoundException
      * @throws \Shippii\Exceptions\RateLimitExceededException
      * @throws \Shippii\Exceptions\ValidationException
      */
-    public function updateShipmentState(string $shipmentId, string $shipmentState): Shipment
+    public function updateShipmentState(string $shipmentId, string $shipmentState): Message
     {
         $response = $this->post("v1/shipment/{$shipmentId}/update-state/{$shipmentState}");
-        return Util::convertToShippiiObject(Shipment::class, $response);
+        $response =  ['message' => $response['message']];
+
+        return Util::convertToShippiiObject(Message::class, $response);
     }
 
     /**
